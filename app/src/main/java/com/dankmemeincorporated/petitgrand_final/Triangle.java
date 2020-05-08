@@ -72,7 +72,7 @@ public class Triangle {
     private int IdMVPMatrix; // identifiant (location) pour transmettre la matrice PxVxM
 
     static final int COORDS_PER_VERTEX = 3; // nombre de coordonnées par vertex
-    static final int COULEURS_PER_VERTEX = 3; // nombre de composantes couleur par vertex
+    static final int COULEURS_PER_VERTEX = 4; // nombre de composantes couleur par vertex
 
     int []linkStatus = {0};
 
@@ -94,9 +94,9 @@ public class Triangle {
     // Le carré est dessiné avec 2 triangles
     private final short Indices[] = { 0, 1, 2 };
 
-    private final int vertexStride = COORDS_PER_VERTEX * 3; // le pas entre 2 sommets : 4 bytes per vertex
+    private final int vertexStride = COORDS_PER_VERTEX * 4; // le pas entre 2 sommets : 4 bytes per vertex
 
-    private final int couleurStride = COULEURS_PER_VERTEX * 3; // le pas entre 2 couleurs
+    private final int couleurStride = COULEURS_PER_VERTEX * 4; // le pas entre 2 couleurs
 
     private final float Position[] = {0.0f,0.0f};
 

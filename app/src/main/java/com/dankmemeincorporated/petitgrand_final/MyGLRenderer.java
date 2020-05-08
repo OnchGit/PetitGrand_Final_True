@@ -30,14 +30,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = "MyGLRenderer";
     private Square   mSquare;
 
+    private Square square2;
+
     // Les matrices habituelles Model/View/Projection
 
     private final float[] mMVPMatrix = new float[16];
+    private final float[] mMVPMatrix2 = new float[16];
     private final float[] mProjectionMatrix = new float[16];
+    private final float[] mProjectionMatrix2 = new float[16];
     private final float[] mViewMatrix = new float[16];
+    private final float[] mViewMatrix2 = new float[16];
     private final float[] mModelMatrix = new float[16];
+    private final float[] mModelMatrix2 = new float[16];
 
-    private float[] mSquarePosition = {0.0f, 0.0f};
+    private float[] mSquarePosition = {-8.5f, 9.0f};
+    private float[] mSquarePosition2 = {-7.0f, 9.0f};
 
     /* Première méthode équivalente à la fonction init en OpenGLSL */
     @Override
@@ -48,12 +55,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         /* on va définir une classe Square pour dessiner des carrés */
         mSquare   = new Square(mSquarePosition);
+        square2   = new Square(mSquarePosition2);
     }
 
     /* Deuxième méthode équivalente à la fonction Display */
     @Override
     public void onDrawFrame(GL10 unused) {
         float[] scratch = new float[16]; // pour stocker une matrice
+        float[] scratch2 = new float[16]; // pour stocker une matrice
 
         // glClear rien de nouveau on vide le buffer de couleur et de profondeur */
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
@@ -69,8 +78,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
        // Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
         Matrix.setIdentityM(mViewMatrix,0);
 
+
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+
 
         Matrix.setIdentityM(mModelMatrix,0);
 
@@ -87,6 +98,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         /* on appelle la méthode dessin du carré élémentaire */
         mSquare.draw(scratch);
+
+
+//        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
+//
+//        Matrix.setIdentityM(mViewMatrix2,0);
+//        Matrix.multiplyMM(mMVPMatrix2, 0, mProjectionMatrix2, 0, mViewMatrix2, 0);
+//        Matrix.setIdentityM(mModelMatrix2,0);
+//        Matrix.translateM(mModelMatrix2, 0, mSquarePosition2[0], mSquarePosition2[1], 0);
+//        Log.d("Renderer", "mSquarex"+Float.toString(mSquarePosition2[0]));
+//        Log.d("Renderer", "mSquarey"+Float.toString(mSquarePosition2[1]));
+//        Matrix.multiplyMM(scratch, 0, mMVPMatrix2, 0, mModelMatrix2, 0);
+//        square2.draw(scratch2);
 
     }
 
