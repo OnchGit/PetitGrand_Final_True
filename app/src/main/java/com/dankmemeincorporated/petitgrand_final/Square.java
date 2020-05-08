@@ -89,17 +89,25 @@ public class Square {
             -1.0f,  -1.0f, 0.0f,
             1.0f,  -1.0f, 0.0f,
             1.f,  1.f, 0.0f,
-            0.0f,0.0f,0.0f};
+            0.0f,0.0f,0.0f,
+            0.0f,1.0f,0.0f,
+            -1.0f,0.0f,0.0f,
+            0.0f,-1.0f,0.0f,
+            1.0f,0.0f,0.0f};
     // Le tableau des couleurs
     static float squareColors[] = {
              1.0f,  0.0f, 0.0f, 1.0f,
              1.0f,  1.0f, 1.0f, 1.0f,
              0.0f,  1.0f, 0.0f, 1.0f,
              0.0f,  0.0f, 1.0f, 1.0f,
-            0.0f,0.0f,0.0f,1.0f};
+            0.0f,0.0f,0.0f,1.0f,
+            1.0f,1.0f,1.0f,1.0f,
+            0.5f,0.0f,1.0f,1.0f,
+            1.0f,0.5f,0.5f,1.0f,
+            0.5f,0.5f,0.5f,1.0f};
 
     // Le carré est dessiné avec 2 triangles
-    private final short Indices[] = { 0, 1, 2, 0, 2, 3 };
+    private final short Indices[] = { 7, 8, 9, 9, 1, 5 };
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // le pas entre 2 sommets : 4 bytes per vertex
 
