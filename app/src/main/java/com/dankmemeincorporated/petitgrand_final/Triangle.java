@@ -18,47 +18,44 @@ package com.dankmemeincorporated.petitgrand_final;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
-
-import android.util.Log;
 
 //import android.opengl.GLES20;
 import android.opengl.GLES30;
 
 
-//Dessiner un carré
+//Dessiner un triangle
 
-public class Square {
-/* Le vertex shader avec la définition de gl_Position et les variables utiles au fragment shader
- */
+public class Triangle {
+    /* Le vertex shader avec la définition de gl_Position et les variables utiles au fragment shader
+     */
     private final String vertexShaderCode =
-        "#version 300 es\n"+
-                "uniform mat4 uMVPMatrix;\n"+
-            "in vec3 vPosition;\n" +
-                "in vec4 vCouleur;\n"+
-                "out vec4 Couleur;\n"+
-                "out vec3 Position;\n"+
-            "void main() {\n" +
-                "Position = vPosition;\n"+
-            "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n" +
-                "Couleur = vCouleur;\n"+
-            "}\n";
+            "#version 300 es\n"+
+                    "uniform mat4 uMVPMatrix;\n"+
+                    "in vec3 vPosition;\n" +
+                    "in vec4 vCouleur;\n"+
+                    "out vec4 Couleur;\n"+
+                    "out vec3 Position;\n"+
+                    "void main() {\n" +
+                    "Position = vPosition;\n"+
+                    "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n" +
+                    "Couleur = vCouleur;\n"+
+                    "}\n";
 
     private final String fragmentShaderCode =
             "#version 300 es\n"+
-            "precision mediump float;\n" + // pour définir la taille d'un float
-            "in vec4 Couleur;\n"+
-            "in vec3 Position;\n"+
-            "out vec4 fragColor;\n"+
-            "void main() {\n" +
-            "float x = Position.x;\n"+
-            "float y = Position.y;\n"+
-            "float test = x*x+y*y;\n"+
-            "if (test>1.0) \n"+
-                "discard;\n"+
-            "fragColor = Couleur;\n" +
-            "}\n";
+                    "precision mediump float;\n" + // pour définir la taille d'un float
+                    "in vec4 Couleur;\n"+
+                    "in vec3 Position;\n"+
+                    "out vec4 fragColor;\n"+
+                    "void main() {\n" +
+                    "float x = Position.x;\n"+
+                    "float y = Position.y;\n"+
+                    "float test = x*x+y*y;\n"+
+                    "if (test>1.0) \n"+
+                    "discard;\n"+
+                    "fragColor = Couleur;\n" +
+                    "}\n";
 
     /* les déclarations pour l'équivalent des VBO */
 
@@ -75,7 +72,7 @@ public class Square {
     private int IdMVPMatrix; // identifiant (location) pour transmettre la matrice PxVxM
 
     static final int COORDS_PER_VERTEX = 3; // nombre de coordonnées par vertex
-    static final int COULEURS_PER_VERTEX = 4; // nombre de composantes couleur par vertex
+    static final int COULEURS_PER_VERTEX = 3; // nombre de composantes couleur par vertex
 
     int []linkStatus = {0};
 
@@ -84,50 +81,46 @@ public class Square {
      Oui ce n'est pas joli avec 1.0 en dur ....
      */
 
-    static float squareCoords[] = {
+    static float triangleCoords[] = {
             -1.0f,   1.0f, 0.0f,
-            -1.0f,  -1.0f, 0.0f,
-            1.0f,  -1.0f, 0.0f,
             1.f,  1.f, 0.0f,
-            0.0f,0.0f,0.0f};
+            0.0f, -1.0f, 0.0f};
     // Le tableau des couleurs
-    static float squareColors[] = {
-             1.0f,  0.0f, 0.0f, 1.0f,
-             1.0f,  1.0f, 1.0f, 1.0f,
-             0.0f,  1.0f, 0.0f, 1.0f,
-             0.0f,  0.0f, 1.0f, 1.0f,
-            0.0f,0.0f,0.0f,1.0f};
+    static float triangleColors[] = {
+            0.0f,  1.0f, 1.0f, 1.0f,
+            0.0f,  0.0f, 1.0f, 1.0f,
+            1.0f,  1.0f, 1.0f, 1.0f,};
 
     // Le carré est dessiné avec 2 triangles
-    private final short Indices[] = { 0, 1, 2, 0, 2, 3 };
+    private final short Indices[] = { 0, 1, 2 };
 
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // le pas entre 2 sommets : 4 bytes per vertex
+    private final int vertexStride = COORDS_PER_VERTEX * 3; // le pas entre 2 sommets : 4 bytes per vertex
 
-    private final int couleurStride = COULEURS_PER_VERTEX * 4; // le pas entre 2 couleurs
+    private final int couleurStride = COULEURS_PER_VERTEX * 3; // le pas entre 2 couleurs
 
     private final float Position[] = {0.0f,0.0f};
 
-    public Square(float[] Pos) {
+    public Triangle(float[] Pos) {
 
         Position[0] = Pos[0];
         Position[1] = Pos[1];
         // initialisation du buffer pour les vertex (4 bytes par float)
-        ByteBuffer bb = ByteBuffer.allocateDirect(squareCoords.length * 4);
+        ByteBuffer bb = ByteBuffer.allocateDirect(triangleCoords.length * 3);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(squareCoords);
+        vertexBuffer.put(triangleCoords);
         vertexBuffer.position(0);
 
 
         // initialisation du buffer pour les couleurs (4 bytes par float)
-        ByteBuffer bc = ByteBuffer.allocateDirect(squareColors.length * 4);
+        ByteBuffer bc = ByteBuffer.allocateDirect(triangleColors.length * 3);
         bc.order(ByteOrder.nativeOrder());
         colorBuffer = bc.asFloatBuffer();
-        colorBuffer.put(squareColors);
+        colorBuffer.put(triangleColors);
         colorBuffer.position(0);
 
         // initialisation du buffer des indices
-        ByteBuffer dlb = ByteBuffer.allocateDirect(Indices.length * 2);
+        ByteBuffer dlb = ByteBuffer.allocateDirect(Indices.length * 1);
         dlb.order(ByteOrder.nativeOrder());
         indiceBuffer = dlb.asShortBuffer();
         indiceBuffer.put(Indices);
@@ -160,7 +153,7 @@ public class Square {
         // Add program to OpenGL environment
         GLES30.glUseProgram(IdProgram);
 
-           // get handle to shape's transformation matrix
+        // get handle to shape's transformation matrix
         IdMVPMatrix = GLES30.glGetUniformLocation(IdProgram, "uMVPMatrix");
 
         // Apply the projection and view transformation
