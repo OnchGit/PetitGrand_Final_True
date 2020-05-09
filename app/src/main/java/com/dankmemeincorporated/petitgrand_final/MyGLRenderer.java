@@ -38,6 +38,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triangle mTriangle;
     private Square   mSquare;
     private Pentagone mpenta;
+    private Hexagone hexa;
+    private Hourglass hourglass;
+    private Windows window;
+    private Triforce triforce;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -56,6 +60,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mTriangle = new Triangle();
         mSquare   = new Square();
         mpenta = new Pentagone();
+        hexa = new Hexagone();
+        hourglass = new Hourglass();
+        window = new Windows();
+        triforce=new Triforce();
     }
 
     @Override
@@ -93,6 +101,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         mpenta.draw(scratch);
+        hexa.draw(scratch);
+        hourglass.draw(scratch);
+        window.draw(scratch);
+        triforce.draw(scratch);
+
+
     }
 
     @Override
