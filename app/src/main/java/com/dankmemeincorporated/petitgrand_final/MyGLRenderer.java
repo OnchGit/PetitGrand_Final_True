@@ -79,8 +79,46 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
+        float [] begin = new float[16];
+
+        Matrix.multiplyMM(begin,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.translateM(begin,0,0.6f,0.9f,0f);
+        //Matrix.multiplyMM();
+
+
         // Draw square
-        mSquare.draw(mMVPMatrix);
+        mTriangle.draw(begin);
+
+        for (int i = 1 ; i<7 ; i++){
+
+            float[] next = new float[16];
+            float decalX = i*(0.10f+((float)i/100));
+            float decalY = i*0.01f;
+
+            Matrix.multiplyMM(next,0,mProjectionMatrix,0,mViewMatrix,0);
+            Matrix.translateM(next,0,0.6f-decalX,0.9f-decalY,0);
+
+            switch(i){
+                case 1:
+                    mSquare.draw(next);
+                    break;
+                case 2:
+                    mpenta.draw(next);
+                    break;
+                case 3:
+                    hexa.draw(next);
+                    break;
+                case 4:
+                    hourglass.draw(next);
+                    break;
+                case 5:
+                    window.draw(next);
+                    break;
+                case 6:
+                    triforce.draw(next);
+                    break;
+            }
+        }
 
         // Create a rotation for the triangle
 
@@ -89,22 +127,22 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // long time = SystemClock.uptimeMillis() % 4000L;
         // float angle = 0.090f * ((int) time);
 
-        Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
+        //Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        //Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
         // Draw triangle
-        mTriangle.draw(scratch);
-
-
-        mpenta.draw(scratch);
-        hexa.draw(scratch);
-        hourglass.draw(scratch);
-        window.draw(scratch);
-        triforce.draw(scratch);
+//        mTriangle.draw(mMVPMatrix);
+//
+//
+//        mpenta.draw(mMVPMatrix);
+//        hexa.draw(mMVPMatrix);
+//        hourglass.draw(mMVPMatrix);
+//        window.draw(mMVPMatrix);
+//        triforce.draw(mMVPMatrix);
 
 
     }
