@@ -67,7 +67,17 @@ public class Triangle {
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Triangle() {
+    private final float Position[] = {0.0f,0.0f};
+
+    public Triangle(/*float[] pos*/) {
+//            Position[0] = pos[0];
+//            Position[1] = pos[1];
+//            triangleCoords = new float[]{
+//                    0.0f+Position[0], 0.0622008459f+Position[1], 0.0f,   // top
+//                    -0.05f+Position[0], -0.0311004243f+Position[1], 0.0f,   // bottom left
+//                    0.05f+Position[0], -0.0311004243f+Position[1], 0.0f    // bottom right
+//            };
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (number of coordinate values * 4 bytes per float)
@@ -95,12 +105,18 @@ public class Triangle {
 
     }
 
+    public void set_position(float[] pos) {
+        Position[0]=pos[0];
+        Position[1]=pos[1];
+    }
+
     /**
      * Encapsulates the OpenGL ES instructions for drawing this shape.
      *
      * @param mvpMatrix - The Model View Project matrix in which to draw
      * this shape.
      */
+
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);

@@ -48,16 +48,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
+    private final float[] mModelMatrix = new float[16];
+    private final float[] mMaaaatrix= new float[16];
+
 
     private float mAngle;
-
+    private float[] pos = {0.6f, 0.8f};
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        mTriangle = new Triangle();
+
+
+        mTriangle = new Triangle(/*pos*/);
         mSquare   = new Square();
         mpenta = new Pentagone();
         hexa = new Hexagone();
@@ -80,7 +85,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         // Draw square
-        mSquare.draw(mMVPMatrix);
+        //mSquare.draw(mMVPMatrix);
 
         // Create a rotation for the triangle
 
@@ -88,23 +93,77 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Leave this code out when using TouchEvents.
         // long time = SystemClock.uptimeMillis() % 4000L;
         // float angle = 0.090f * ((int) time);
+        Matrix.setIdentityM(mModelMatrix,0);
+
+        Matrix.translateM(mModelMatrix, 0, pos[0], pos[1], 0);
+        //Matrix.translateM(mModelMatrix,mMVPMatrix,0,pos[0],pos[1],0.0f);
+
+        Matrix.multiplyMM(mMVPMatrix,0,mMVPMatrix,0,mModelMatrix,0);
 
         Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
+
+
 
         // Combine the rotation matrix with the projection and camera view
         // Note that the mMVPMatrix factor *must be first* in order
         // for the matrix multiplication product to be correct.
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        Matrix.multiplyMM(mModelMatrix, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+
 
         // Draw triangle
-        mTriangle.draw(scratch);
+        //mTriangle.set_position(pos);
+
+        mTriangle.draw(mModelMatrix);
+
+        Matrix.setIdentityM(mMaaaatrix,0);
+        Matrix.translateM(mMaaaatrix,0,pos[0],pos[1],0f);
+
+        for (int i = 1; i < 7; ++i) {
+            float dist = -0.15f;
+
+//            if (i > 2){dist = -0.30f;}
+//            if (i == 5){dist = -0.40f;}
+//            if (i > 5){dist = -0.60f;}
+
+            Matrix.translateM(mModelMatrix, 0, dist, 0.0f, 0.0f);
+            Matrix.multiplyMM(mMaaaatrix, 0, mMVPMatrix, 0, mModelMatrix, 0);
+
+            switch (i) {
+                case 1:
+                    mSquare.draw(mMaaaatrix);
+                    break;
+                case 2:
+                    mpenta.draw(mMaaaatrix);
+                    break;
+                case 3:
+                    hexa.draw(mMaaaatrix);
+                    break;
+                case 4:
+                    hourglass.draw(mMaaaatrix);
+                    break;
+                case 5:
+                    window.draw(mMaaaatrix);
+                    break;
+                case 6:
+                    triforce.draw(mMaaaatrix);
+                    break;
+            }        }
+
+        //mTriangle.draw(mModelMatrix);
+
+//        pos = new float[]{0.1f, 0.1f};
+//        Matrix.translateM(mModelMatrix, 0, pos[0], pos[1], 0);
+//        //Matrix.translateM(mModelMatrix,mMVPMatrix,0,pos[0],pos[1],0.0f);
+//
+//        Matrix.multiplyMM(mMVPMatrix,0,mMVPMatrix,0,mModelMatrix,0);
 
 
-        mpenta.draw(scratch);
-        hexa.draw(scratch);
-        hourglass.draw(scratch);
-        window.draw(scratch);
-        triforce.draw(scratch);
+
+//        mpenta.draw(scratch);
+//        hexa.draw(scratch);
+//        hourglass.draw(scratch);
+//        window.draw(scratch);
+        //triforce.draw(mMVPMatrix);
 
 
     }
@@ -180,6 +239,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      */
     public void setAngle(float angle) {
         mAngle = angle;
+    }
+
+    public void setPosition(float x, float y) {
+        /*mSquarePosition[0] += x;
+        mSquarePosition[1] += y;*/
+        pos[0] = x;
+        pos[1] = y;
+
+    }
+
+    public float[] getPosition() {
+        return pos;
     }
 
 }
