@@ -42,6 +42,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Hourglass hourglass;
     private Windows window;
     private Triforce triforce;
+    private Frame frame;
+    private Plus plus;
+    private Minus minus;
+    private Equal equal;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -64,6 +68,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         hourglass = new Hourglass();
         window = new Windows();
         triforce=new Triforce();
+        frame = new Frame();
+        plus = new Plus();
+        minus = new Minus();
+        equal = new Equal();
+
     }
 
     @Override
@@ -143,6 +152,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        hourglass.draw(mMVPMatrix);
 //        window.draw(mMVPMatrix);
 //        triforce.draw(mMVPMatrix);
+        Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
+        frame.draw(scratch);
+        equal.draw(scratch);
 
 
     }
