@@ -43,9 +43,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Windows window;
     private Triforce triforce;
     private Frame frame;
+
     private Plus plus;
     private Minus minus;
     private Equal equal;
+    private Arrow arrow;
+
+    private int left;
+    private int middle;
+    private int right;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -53,7 +59,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
 
+//    private float[] plusposition = {-0.45f,-0.55f};
+//    private float[] minusposition = {0.45f,-0.55f};
+//    private float[] equalposition = {0.0f,-0.55f};
+
     private float mAngle;
+
+    public MyGLRenderer(int i, int i1, int i2) {
+        left=i;
+        middle=i1;
+        right=i2;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -69,9 +85,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         window = new Windows();
         triforce=new Triforce();
         frame = new Frame();
+
         plus = new Plus();
         minus = new Minus();
         equal = new Equal();
+        arrow = new Arrow();
 
     }
 
@@ -129,6 +147,44 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             }
         }
 
+        float[] displayA = new float[16];
+        float[] displayB = new float[16];
+        float[] p = new float[16];
+        float[] m = new float[16];
+        float[] e = new float[16];
+        float[] a = new float[16];
+        float[] a1 = new float[16];
+        float[] a2 = new float[16];
+
+        Matrix.multiplyMM(displayA,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(displayB,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(p,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(m,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(e,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(a,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(a1,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.multiplyMM(a2,0,mProjectionMatrix,0,mViewMatrix,0);
+        Matrix.translateM(displayA,0,-0.45f,0.0f,0);
+        Matrix.translateM(a1,0,-0.45f,0.57f,0);
+        Matrix.translateM(m,0,-0.45f,-0.55f,0);
+        Matrix.translateM(displayB,0,0.45f,0.0f,0);
+        Matrix.translateM(a2,0,0.45f,0.57f,0);
+        Matrix.translateM(p,0,0.45f,-0.55f,0);
+        Matrix.translateM(e,0,0.0f,-0.55f,0);
+        Matrix.translateM(a,0,0.0f,-0.80f,0);
+
+        frame.draw(displayA);
+        frame.draw(displayB);
+        minus.draw(m);
+        plus.draw(p);
+        equal.draw(e);
+
+        arrow.draw(a);
+        arrow.draw(a1);
+        arrow.draw(a2);
+
+
+
         // Create a rotation for the triangle
 
         // Use the following code to generate constant rotation.
@@ -154,9 +210,46 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        triforce.draw(mMVPMatrix);
         Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
         frame.draw(scratch);
-        equal.draw(scratch);
+//        System.out.println("left :"+left);
+        displayCarte(left,displayB);
+//        System.out.println("middle :"+middle);
+        displayCarte(middle,scratch);
+//        System.out.println("right :"+right);
+        displayCarte(right,displayA);
 
 
+//        mpenta.draw(scratch);
+
+
+    }
+
+    public void displayCarte(int forme, float[] matr){
+//        System.out.println("forme : "+forme+" et matr :"+matr.toString());
+        if(forme!=0){
+            switch (forme){
+                case 1:
+                    mTriangle.draw(matr);
+                    break;
+                case 2:
+                    mSquare.draw(matr);
+                    break;
+                case 3:
+                    mpenta.draw(matr);
+                    break;
+                case 4:
+                    hexa.draw(matr);
+                    break;
+                case 5:
+                    hourglass.draw(matr);
+                    break;
+                case 6:
+                    window.draw(matr);
+                    break;
+                case 7:
+                    triforce.draw(matr);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -232,4 +325,25 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mAngle = angle;
     }
 
+//    public float[] getPosition(int symbole) {
+//        if(symbole>0){
+//            return plusposition;
+//        }else if(symbole<0){
+//            return minusposition;
+//        }else if(symbole==0){//au cas ou
+//            return equalposition;
+//        }
+//        return new float[16];
+//    }
+
+    public void setPosition(float v, float v1) {
+
+    }
+    public void setBgColor(float r, float g, float b){
+        GLES20.glClearColor(r, g, b, 1.0f);
+    }
+
+    public void afficher(int forme, int cadre){
+
+    }
 }

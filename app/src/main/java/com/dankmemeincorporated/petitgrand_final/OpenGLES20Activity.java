@@ -22,6 +22,9 @@ import android.os.Bundle;
 public class OpenGLES20Activity extends Activity {
 
     private GLSurfaceView mGLView;
+//    public GameController gc;
+
+//    private
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,9 +32,26 @@ public class OpenGLES20Activity extends Activity {
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-        mGLView = new MyGLSurfaceView(this);
+//        gc = new GameController();
+//        System.out.println(gc.toString());
+//        System.out.println(gc.getLeft());
+//        System.out.println(gc.getMid());
+//        System.out.println(gc.getRight());
+
+        mGLView = new MyGLSurfaceView(this,3,5,6/*gc.getLeft(),gc.getMid(),gc.getRight()*/);
         setContentView(mGLView);
+//        update(gc.getLeft(),gc.getMid(),gc.getRight());
     }
+
+    public void update(int l, int m, int r){
+        mGLView = new MyGLSurfaceView(this,l,m,r);
+        setContentView(mGLView);
+
+    }
+
+//    public static void call(int l, int m , int r){
+//        update(l,m,r);
+//    }
 
     @Override
     protected void onPause() {
