@@ -19,10 +19,12 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
+import com.dankmemeincorporated.petitgrand_final.Controller.GameController;
+
 public class OpenGLES20Activity extends Activity {
 
     private GLSurfaceView mGLView;
-//    public GameController gc;
+    public GameController gc;
 
 //    private
 
@@ -38,13 +40,13 @@ public class OpenGLES20Activity extends Activity {
 //        System.out.println(gc.getMid());
 //        System.out.println(gc.getRight());
 
-        mGLView = new MyGLSurfaceView(this,3,5,6/*gc.getLeft(),gc.getMid(),gc.getRight()*/);
+        mGLView = new MyGLSurfaceView(this/*,3,5,6/*gc.getLeft(),gc.getMid(),gc.getRight(),1*/);
         setContentView(mGLView);
 //        update(gc.getLeft(),gc.getMid(),gc.getRight());
     }
 
-    public void update(int l, int m, int r){
-        mGLView = new MyGLSurfaceView(this,l,m,r);
+    public void update(int l, int m, int r,int t){
+        mGLView = new MyGLSurfaceView(this/*,l,m,r,t*/);
         setContentView(mGLView);
 
     }

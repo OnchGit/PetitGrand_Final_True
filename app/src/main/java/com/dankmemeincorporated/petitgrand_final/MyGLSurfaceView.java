@@ -20,6 +20,8 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.dankmemeincorporated.petitgrand_final.Controller.GameController;
+
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
  * This view can also be used to capture touch events, such as a user
@@ -28,19 +30,21 @@ import android.view.MotionEvent;
 public class MyGLSurfaceView extends GLSurfaceView {
 
     private MyGLRenderer mRenderer;
+//    public static GameController gc=new GameController();
 
-    public MyGLSurfaceView(Context context,int l ,int m ,int r) {
+    public MyGLSurfaceView(Context context/*,int l ,int m ,int r,int t*/) {
         super(context);
 
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new MyGLRenderer(l,m,r);
+        mRenderer = new MyGLRenderer(/*l,m,r,t*/);
         setRenderer(mRenderer);
 
         // Render the view only when there is a change in the drawing data
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+//        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
     }
 
@@ -148,11 +152,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     conditionp=true;
                     break;
                 case MotionEvent.ACTION_UP:
+//                    System.out.println("AU SECOURS !");
 //                    mRenderer = new MyGLRenderer(6,6,6);
 //                    setRenderer(mRenderer);
 //                    OpenGLES20Activity.update(3,6,5);
-
                     mRenderer.setBgColor(1.0f,0.0f,0.0f);
+                    mRenderer.doStuff();
+
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditionp=false;
 
@@ -199,6 +205,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     break;
                 case MotionEvent.ACTION_UP:
                     mRenderer.setBgColor(0.5f,0.5f,1.0f);
+                    mRenderer.switchTurn();
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditions=false;
 

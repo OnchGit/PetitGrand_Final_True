@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dankmemeincorporated.petitgrand_final;
+package com.dankmemeincorporated.petitgrand_final.modele;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -22,10 +22,12 @@ import java.nio.ShortBuffer;
 
 import android.opengl.GLES20;
 
+import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
+
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Arrow {
+public class Frame {
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -56,24 +58,27 @@ public class Arrow {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float pentaCoords[] = {
-            -0.04f,0.0f,0.0f,
-            0.04f,0.0f,0.0f,
-            -0.04f,0.05f,0.0f,
-            0.04f,0.05f,0.0f,
-            -0.05f,0.0f,0.0f,
-            0.05f,0.0f,0.0f,
-            0.0f,-0.05f,0.0f,};
+            -0.22f,0.44f,0.0f,//bg
+            0.22f,0.44f,0.0f,//bd
+            0.0f,0.0f,0.0f,//il ne sert à rien mais j'ai numéroté mes points 0,1,3,4,5,...
+            0.22f,-0.44f,0.0f,//mg
+            -0.22f,-0.44f,0.0f,//mg
+            -0.20f,0.40f,0.0f,//bg
+            0.20f,0.40f,0.0f,//bd
+            0.20f,-0.40f,0.0f,//mg
+            -0.20f,-0.40f,0.0f,//md
+            };
 
-    private final short drawOrder[] = { 0,1,2, 2,3,1, 4,5,6};
+    private final short drawOrder[] = { 0,4,8, 5,0,8, 0,1,5, 6,1,5, 6,1,3, 6,7,3, 7,4,3, 7,4,8};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    float color[] = { 0.5f, 0.509803922f, 0.598039216f, 1.0f };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Arrow() {
+    public Frame() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dankmemeincorporated.petitgrand_final;
+package com.dankmemeincorporated.petitgrand_final.modele;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -22,10 +22,12 @@ import java.nio.ShortBuffer;
 
 import android.opengl.GLES20;
 
+import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
+
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Plus {
+public class Windows {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -56,25 +58,26 @@ public class Plus {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float pentaCoords[] = {
-            -0.03f,0.07f,0.0f,//bg
-            0.03f,0.07f,0.0f,//bd
-            0.07f,0.03f,0.0f,//mg
-            0.07f,-0.03f,0.0f,//md
-            0.03f,-0.07f,0.0f,//top
-            -0.03f,-0.07f,0.0f,//top
-            -0.07f,-0.03f,0.0f,
-            -0.07f,0.03f,0.0f};//top
+            -0.11f, 0.11f, 0.0f,   // top left
+            -0.11f, -0.11f, 0.0f,   // bottom left
+            0.11f, -0.11f, 0.0f,   // bottom right
+            0.11f, 0.11f, 0.0f, // top right
+            0.0f,0.11f,0.0f,
+            0.0f,-0.11f,0.0f,
+            -0.11f,0.0f,0.0f,
+            0.11f,0.0f,0.0f,
+            };
 
-    private final short drawOrder[] = { 0,1,4, 0,4,5, 7,3,2, 7,3,6};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
+    private final short drawOrder[] = {0,4,6, 4,3,7, 7,5,2, 5,6,1};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    float color[] = { 0.9f, 0.909803922f, 0.998039216f, 1.0f };
+    float color[] = { 0.6f, 0.109803922f, 0.398039216f, 1.0f };
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public Plus() {
+    public Windows() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
