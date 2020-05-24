@@ -52,43 +52,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private float mPreviousX;
     private float mPreviousY;
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent e) {
-//        // MotionEvent reports input details from the touch screen
-//        // and other input controls. In this case, you are only
-//        // interested in events where the touch position changed.
-//
-//        float x = e.getX();
-//        float y = e.getY();
-//
-//        switch (e.getAction()) {
-//            case MotionEvent.ACTION_MOVE:
-//
-//                float dx = x - mPreviousX;
-//                float dy = y - mPreviousY;
-//
-//                // reverse direction of rotation above the mid-line
-//                if (y > getHeight() / 2) {
-//                    dx = dx * -1 ;
-//                }
-//
-//                // reverse direction of rotation to left of the mid-line
-//                if (x < getWidth() / 2) {
-//                    dy = dy * -1 ;
-//                }
-//
-//                mRenderer.setAngle(
-//                        mRenderer.getAngle() +
-//                        ((dx + dy) * TOUCH_SCALE_FACTOR));  // = 180.0f / 320
-//                requestRender();
-//        }
-//
-//        mPreviousX = x;
-//        mPreviousY = y;
-//        return true;
-//    }
-
-    private boolean conditionp = false;
+    private boolean conditionp = false;//les conditions pour savoir si un bouton a été utilisé
     private boolean conditione = false;
     private boolean conditionm = false;
     private boolean conditions = false;
@@ -112,17 +76,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
         Log.d("message", "screen_y="+Float.toString(screen_y));
 
 
-        /* accès aux paramètres du rendu (cf MyGLRenderer.java)
-        soit la position courante du centre du carré
-         */
-//        float[] posp = mRenderer.getPosition(1);
-//        float[] posm = mRenderer.getPosition(-1);
-//        float[] pose = mRenderer.getPosition(0);
-
-        /* Conversion des coordonnées pixel en coordonnées OpenGL
-        Attention l'axe x est inversé par rapport à OpenGLSL
-        On suppose que l'écran correspond à un carré d'arête 2 centré en 0
-         */
 
         float x_opengl = 20.0f*x/getWidth() - 10.0f;
         float y_opengl = -20.0f*y/getHeight() + 10.0f;
@@ -130,10 +83,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         Log.d("message","x_opengl="+Float.toString(x_opengl));
         Log.d("message","y_opengl="+Float.toString(y_opengl));
 
-        /* Le carré représenté a une arête de 2 (oui il va falloir changer cette valeur en dur !!)
-        /* On teste si le point touché appartient au carré ou pas car on ne doit le déplacer que si ce point est dans le carré
-        */
-
+        //on test ici si l'input correspond à la position d'un bouton sur l'écran
         boolean test_plus = ((x_opengl > -7.77f && (x_opengl <-5.88f) && (y_opengl > -6.27f) && (y_opengl < -4.80f)));
         boolean test_minus = ((x_opengl > 5.15f) && (x_opengl < 7.92f) && (y_opengl < -5.17f) && (y_opengl > -6.08f));
         boolean test_equal = ((x_opengl > -1.26f) && (x_opengl < 1.335f) && (y_opengl > -6.38f) && (y_opengl < -4.85f));
@@ -152,15 +102,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     conditionp=true;
                     break;
                 case MotionEvent.ACTION_UP:
-//                    System.out.println("AU SECOURS !");
-//                    mRenderer = new MyGLRenderer(6,6,6);
-//                    setRenderer(mRenderer);
-//                    OpenGLES20Activity.update(3,6,5);
-//                    mRenderer.setBgColor(1.0f,0.0f,0.0f);
-//                    mRenderer.dosomethinggoddammit();
 
-                    if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(1);}
-                    requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
+                    if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(1);}//si on a un gagnant le bouton est désactivé sinon on appelle la fonction bet
+                    requestRender();
                     conditionp=false;
 
             }
@@ -169,15 +113,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
             System.out.println("minus");
 
             switch (e.getAction()) {
-                /* Lorsqu'on touche l'écran on mémorise juste le point */
                 case MotionEvent.ACTION_DOWN:
                     conditionm=true;
                     break;
                 case MotionEvent.ACTION_UP:
-//                    mRenderer.setBgColor(0.0f,1.0f,0.0f);
-//                    mRenderer.truc();
+
                     if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(-1);}
-                    requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
+                    requestRender();
                     conditionm=false;
 
             }
@@ -186,14 +128,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
             System.out.println("equal");
 
             switch (e.getAction()) {
-                /* Lorsqu'on touche l'écran on mémorise juste le point */
                 case MotionEvent.ACTION_DOWN:
                     conditione=true;
                     break;
                 case MotionEvent.ACTION_UP:
-//                    mRenderer.setBgColor(0.0f,0.0f,1.0f);
                     if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(0);}
-                    requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
+                    requestRender();
                     conditione=false;
 
             }
@@ -203,17 +143,15 @@ public class MyGLSurfaceView extends GLSurfaceView {
             System.out.println("stop");
 
             switch (e.getAction()) {
-                /* Lorsqu'on touche l'écran on mémorise juste le point */
                 case MotionEvent.ACTION_DOWN:
                     conditions=true;
                     break;
                 case MotionEvent.ACTION_UP:
-//                    mRenderer.setBgColor(0.5f,0.5f,1.0f);
-//                    mRenderer.switchTurn();
+
                     if(mRenderer.gc.getWinner()==0){mRenderer.gc.stop();}else{
-                        mRenderer.restart();//après avoir gagné
+                        mRenderer.restart();//après avoir gagné le bouton stop appelle la fonction de restart
                     }
-                    requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
+                    requestRender();
                     conditions=false;
 
             }

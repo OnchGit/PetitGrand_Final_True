@@ -27,7 +27,7 @@ import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Hourglass {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
+public class Hourglass {//le sablier vert
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -65,7 +65,7 @@ public class Hourglass {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
             0.0f,0.10f,0.0f,//top
             0.0f,-0.10f,0.0f};//top
 
-    private final short drawOrder[] = { 3,2,5, 4,0,1};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
+    private final short drawOrder[] = { 3,2,5, 4,0,1};
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 

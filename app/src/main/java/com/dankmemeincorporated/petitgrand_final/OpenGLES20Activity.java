@@ -27,7 +27,7 @@ public class OpenGLES20Activity extends Activity {
     private GLSurfaceView mGLView;
     public GameController gc;
 
-//    private
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,43 +36,30 @@ public class OpenGLES20Activity extends Activity {
 
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-//        gc = new GameController();
-//        System.out.println(gc.toString());
-//        System.out.println(gc.getLeft());
-//        System.out.println(gc.getMid());
-//        System.out.println(gc.getRight());
 
-        mGLView = new MyGLSurfaceView(this/*,3,5,6/*gc.getLeft(),gc.getMid(),gc.getRight(),1*/);
+
+        mGLView = new MyGLSurfaceView(this);
         setContentView(mGLView);
-//        update(gc.getLeft(),gc.getMid(),gc.getRight());
     }
 
-    public void update(int l, int m, int r,int t){
+    public void update(int l, int m, int r,int t){//une tentative infructueuse
         mGLView = new MyGLSurfaceView(this/*,l,m,r,t*/);
         setContentView(mGLView);
 
     }
 
-//    public static void call(int l, int m , int r){
-//        update(l,m,r);
-//    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // The following call pauses the rendering thread.
-        // If your OpenGL application is memory intensive,
-        // you should consider de-allocating objects that
-        // consume significant memory here.
+
         mGLView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // The following call resumes a paused rendering thread.
-        // If you de-allocated graphic objects for onPause()
-        // this is a good place to re-allocate them.
+
         mGLView.onResume();
     }
 }

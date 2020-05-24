@@ -27,7 +27,7 @@ import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Arrow {
+public class Arrow {//la flèche
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate

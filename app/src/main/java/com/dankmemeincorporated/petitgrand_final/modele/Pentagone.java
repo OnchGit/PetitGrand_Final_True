@@ -27,7 +27,7 @@ import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Pentagone {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
+public class Pentagone {//bon bah apparemment c'est une couronne ¯\_(ツ)_/¯
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -64,7 +64,7 @@ public class Pentagone {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
             -0.10f,0.02f,0.0f,//md
             0.0f,0.10f,0.0f};//top
 
-    private final short drawOrder[] = { 4,0,1, 2,1,0, 3,1,0};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
+    private final short drawOrder[] = { 4,0,1, 2,1,0, 3,1,0};
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 

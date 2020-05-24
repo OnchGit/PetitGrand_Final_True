@@ -27,7 +27,7 @@ import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Minus {
+public class Minus {//le moins
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -67,7 +67,7 @@ public class Minus {
             -0.07f,-0.03f,0.0f,
             -0.07f,0.03f,0.0f};//top
 
-    private final short drawOrder[] = { /*0,1,4, 0,4,5,*/ 7,3,2, 7,3,6};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
+    private final short drawOrder[] = { /*0,1,4, 0,4,5,*/ 7,3,2, 7,3,6};
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 

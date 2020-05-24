@@ -12,12 +12,12 @@ public class GameController {
     private int turn;
     private boolean cheatmode;
     private int winner;
-    private LinkedList<Integer> stackA=new LinkedList<Integer>();
-    private LinkedList<Integer> stackB=new LinkedList<Integer>();
-    private LinkedList<Integer> stackMid=new LinkedList<Integer>();
-    private LinkedList<Integer> stackRev=new LinkedList<Integer>();
+    private LinkedList<Integer> stackA=new LinkedList<Integer>();//pile du J1
+    private LinkedList<Integer> stackB=new LinkedList<Integer>();//pile du J2
+    private LinkedList<Integer> stackMid=new LinkedList<Integer>();//pile centrale
+    private LinkedList<Integer> stackRev=new LinkedList<Integer>();//pile temporaire des paris réussis du joueur actuel
 
-    private int stock1;
+    private int stock1;//pour retenir la dernière carte lors d'un pari raté
     private int stock2;
 
     public GameController(){
@@ -33,11 +33,11 @@ public class GameController {
         System.out.println(turn);
 
     }
-    public void cheat(){//en mode cheat le joueur peut voir la carte actuelle et pas simplement la dernière qu'il a joué.
+    public void cheat(){//en mode cheat le joueur peut voir la carte actuelle et pas simplement la dernière qu'il a joué/sur laquelle il a parié.
         cheatmode=true;
     }
 
-    public void distribute(){
+    public void distribute(){//distribue les cartes
         for(int i = 0; i<30;i++){
             stackA.add(getFreeCard());
             stackB.add(getFreeCard());
@@ -46,20 +46,9 @@ public class GameController {
     }
 
     private static int cards[]={9,9,9,9,9,9,9};
-    public int getFreeCard(){
-//        System.out.println("Bonjour!");
-//        boolean done = false;
+    public int getFreeCard(){//pioche une carte en s'assurant qu'il en reste en stock
+
         Random rand = new Random();
-//        while(!done) {
-//            System.out.println("Boucle !");
-//
-//            int nb = rand.nextInt(6);
-//            if (cards[nb] > 0) {
-//                cards[nb]--;
-//                done=true;//c'est par principe ^^
-//                return nb+1;
-//            }
-//        }
         int nb=0;
         do{
             for (int c :cards){
@@ -74,14 +63,8 @@ public class GameController {
     }
 
 
-    public void bet(int bt){
-        LinkedList<Integer> stack;
+    public void bet(int bt){//effectue les tests liés au pari
         int compare=stackMid.getLast().intValue();
-//        if(stackRev.isEmpty()){//j'avais compris qu'on comparait à la dernière jouée
-//            compare=stackMid.getLast().intValue();
-//        }else{
-//            compare=stackRev.getLast().intValue();
-//        }
         if(turn==1){
             if(
                     (bt==1&&stackA.getFirst().intValue()>compare)||
@@ -89,7 +72,6 @@ public class GameController {
                             (bt==-1&&stackA.getFirst().intValue()<compare)){
                 continuer();//succes
             }else{
-                System.out.println("J1 rempile !");
                 rempiler();//echec
             }
         }else{
@@ -108,58 +90,31 @@ public class GameController {
 
     public void rempiler(){//le joueur n'a pas réussi son pari il récupère les cartes jouées
         if(turn==1) {
-//            System.out.println("Rempilage !");
-//            System.out.println("tour : "+turn);
-//            stackRev.getLast().setNext(stackA.getFirst());
-//            stackA.setHead(stackRev.getFirst());
-//            turn=2;
-//            stackRev.setHead(new Maillon());
-//            stackRev.setTail(new Maillon());
             stackA.addAll(stackRev);
             stackRev.clear();
             turn=(turn%2)+1;
             stock1=stackA.getFirst().intValue();//stoque le dernier élément afin de l'afficher au joueur puis le renvoit à la fin de la pile
             stackA.add(stackA.getFirst().intValue());
-            stackA.removeFirst();
-//            System.out.println("maintenant tour : "+turn);
-//            switchTurn();
-//            turn=2;
+            stackA.removeFirst();;
         }else /*if(turn==2) */{
-//            stackRev.getLast().setNext(stackB.getFirst());
-//            stackB.setHead(stackRev.getFirst());
-//            turn=1;
-//            stackRev.setHead(new Maillon());
-//            stackRev.setTail(new Maillon());
             stackB.addAll(stackRev);
             stackRev.clear();
             turn=(turn%2)+1;
             stock2=stackB.getFirst().intValue();//stoque le dernier élément afin de l'afficher au joueur puis le renvoit à la fin de la pile
             stackB.add(stackB.getFirst().intValue());
             stackB.removeFirst();
-//            switchTurn();
         }
     }
-    public void continuer(){
+
+
+    public void continuer(){//pari réussi on stock la carte dans la pile temporaire et on passe à la suivante
         if(turn==1) {
             stackRev.add(stackA.getFirst().intValue());
             stackA.removeFirst();
-//            stackRev.getLast().setNext(stackA.getFirst());
-//            stackRev.setTail(stackRev.getLast().getNext());
-//            if(stackA.getFirst().getNext()!=null){
-//                stackA.setHead(stackA.getFirst().getNext());
-//                stackRev.getLast().setNext(null);
-//            }else{
             if(stackA.isEmpty())
                 win(1);
-//            }
         }
         if(turn==2) {
-//            stackRev.getLast().setNext(stackB.getFirst());
-//            stackRev.setTail(stackRev.getLast().getNext());
-//            if(stackA.getFirst().getNext()!=null) {
-//                stackB.setHead(stackB.getFirst().getNext());
-//                stackRev.getLast().setNext(null);
-//            }else{
             stackRev.add(stackB.getFirst().intValue());
             stackB.removeFirst();
             if(stackB.isEmpty()){
@@ -168,43 +123,37 @@ public class GameController {
         }
     }
 
-    public void stop(){
-//        System.out.println("stop");
-//        stackMid.getLast().setNext(stackRev.getFirst());
-//        stackMid.setTail(stackRev.getLast());
-//        stackRev.setHead(new Maillon(0));
-//        stackRev.setTail(new Maillon(0));
+    public void stop(){//le joueur passe son tour et met ses cartes (pari réussi) sur la pile centrale
         stackMid.addAll(stackRev);
         stackRev.clear();
         turn=turn%2+1;
-//        switchTurn();
     }
 
-    public void win(int who){
+    public void win(int who){//quelqu'un a gagné: bravo quelqu'un!
         System.out.println("Joueur "+who+" a gagné !");
         winner=who;
     }
 
     public int getLeft() {//joueur 1 ... que j'ai mis à droite
-        if (cheatmode) {
-            if (stackA.isEmpty()) {
+        if (cheatmode) {//en cheatmode ono voit toujours la carte suivante
+            if (stackA.isEmpty()) {//sauf si la pile est vide
                 return 0;
             } else {
                 return stackA.getFirst().intValue();
             }
-        } else {
-            if (turn == 2) {
-                if (stock1 != 0) {
+        } else {//en mode normal
+            if (turn == 2) {//si ce n'est pas son tour
+                if (stock1 != 0) {//mais qu'il vient de perdre un pari
                     int temp = stock1;
                     stock1 = 0;
-                    return temp;
+                    return temp;//on lui affiche la carte sur laquelle son pari a échoué
                 }else{
                     return 0;
                 }
-            } else {
+            } else {//si c'est son tour
                 if (stackRev.isEmpty()) {
                     return 0;
-                } else {
+                } else {//on lui affiche la dèrnière carte sur laquelle il a réussi son pari
                     return stackRev.getLast().intValue();
                 }
             }
@@ -234,32 +183,15 @@ public class GameController {
                 }
             }
 
-//            if(turn==2){
-//
-//            }
-//            if(stackRev.isEmpty()){
-//                if(stock2==0){
-//                    return 0;
-//                }else{
-//                    int temp=stock2;
-//                    stock2=0;
-//                    return temp;
-//                }
-//            }else{
-//                return stackRev.getLast().intValue();
-//            }
         }
 
     }
-    public int getMid(){
-//        if(stackRev.isEmpty()/*.getFirst().intValue()==0*/){
+    public int getMid(){//la carte au sommet de la pile centrale, enfin celle visible par les joueurs
         return stackMid.getLast().intValue();
-//        }
-//        return stackRev.getLast().intValue();
     }
 
 
-    public int switchTurn(){
+    public int switchTurn(){//on ne s'en sert pas
         if(turn==1){
             turn=2;
         }else{
@@ -292,7 +224,7 @@ public class GameController {
         this.winner = winner;
     }
 
-    public void restart() {
+    public void restart() {//redistribue les cartes et donne la main au joueur perdant
         switchTurn();
         winner=0;
         stackB.clear();

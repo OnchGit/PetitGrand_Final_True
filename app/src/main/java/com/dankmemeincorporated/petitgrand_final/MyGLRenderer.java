@@ -72,9 +72,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private int right;
 //    private int turn;
 
-    private Pentagone penta2;
-
-
 
     private float[] displayA = new float[16];
     private float[] displayB = new float[16];
@@ -87,9 +84,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mViewMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
 
-//    private float[] plusposition = {-0.45f,-0.55f};
-//    private float[] minusposition = {0.45f,-0.55f};
-//    private float[] equalposition = {0.0f,-0.55f};
 
     private float mAngle;
 
@@ -123,15 +117,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 //        turn=1;
 
-        penta2 = new Pentagone();
-
 //        gc.cheat();
 //TODO utiliiser la fonction cheat permet de visualiser la carte actuelle au lieu de la dernière carte jouée/retournée
 
-
-//        gc = new GameController();
-
-//        letsgo();
 
 
         Matrix.multiplyMM(displayA,0,mProjectionMatrix,0,mViewMatrix,0);
@@ -162,13 +150,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         Matrix.multiplyMM(begin,0,mProjectionMatrix,0,mViewMatrix,0);
         Matrix.translateM(begin,0,0.6f,0.9f,0f);
-        //Matrix.multiplyMM();
 
-
-        // Draw square
         mTriangle.draw(begin);
 
-        for (int i = 1 ; i<7 ; i++){
+        for (int i = 1 ; i<7 ; i++){//ici on dessine l'échelle
 
             float[] next = new float[16];
             float decalX = i*(0.10f+((float)i/100));
@@ -199,14 +184,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             }
         }
 
-//        float[] displayA = new float[16];
-//        float[] displayB = new float[16];
         float[] p = new float[16];
         float[] m = new float[16];
         float[] e = new float[16];
         float[] a = new float[16];
-//        float[] a1 = new float[16];
-//        float[] a2 = new float[16];
 
         Matrix.multiplyMM(displayA,0,mProjectionMatrix,0,mViewMatrix,0);
         Matrix.multiplyMM(displayB,0,mProjectionMatrix,0,mViewMatrix,0);
@@ -227,7 +208,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         frame.draw(displayA);
         frame.draw(displayB);
-        if(gc.getWinner()==0){
+        if(gc.getWinner()==0){//si quelqu'un a gagné on remplace les boutons par des couronnes
             minus.draw(m);
             plus.draw(p);
             equal.draw(e);
@@ -238,7 +219,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
 
         arrow.draw(a);
-        if ((gc.getTurn() == 1)) {
+        if ((gc.getTurn() == 1)) {//on met la flèche au dessus du joueur actuel; on met une couronne s'il a gagné
             if(gc.getWinner()==1){
                 mpenta.draw(a1);
             }else{
@@ -255,50 +236,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
 
 
-        // Create a rotation for the triangle
-
-        // Use the following code to generate constant rotation.
-        // Leave this code out when using TouchEvents.
-        // long time = SystemClock.uptimeMillis() % 4000L;
-        // float angle = 0.090f * ((int) time);
-
-        //Matrix.setRotateM(mRotationMatrix, 0, mAngle, 0, 0, 1.0f);
-
-        // Combine the rotation matrix with the projection and camera view
-        // Note that the mMVPMatrix factor *must be first* in order
-        // for the matrix multiplication product to be correct.
-        //Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-
-        // Draw triangle
-//        mTriangle.draw(mMVPMatrix);
-//
-//
-//        mpenta.draw(mMVPMatrix);
-//        hexa.draw(mMVPMatrix);
-//        hourglass.draw(mMVPMatrix);
-//        window.draw(mMVPMatrix);
-//        triforce.draw(mMVPMatrix);
         Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
         frame.draw(scratch);
-//        System.out.println("left :"+left);
         displayCarte(gc.getLeft(),displayA);
-//        System.out.println("middle :"+middle);
         displayCarte(gc.getMid(),scratch);
-//        System.out.println("right :"+right);
         displayCarte(gc.getRight(),displayB);
 
-//        displayCarte(2,displayA);
-//        displayCarte(5,displayB);
-//        hexa.draw(displayA);
-
-
-//        mpenta.draw(scratch);
-//        penta2.draw(displayB);
 
 
     }
 
-    public void displayCarte(int forme, float[] matr){
+    public void displayCarte(int forme, float[] matr){//effectue le dessin de la forme demandé dans la matrice donnée
 //        System.out.println("forme : "+forme+" et matr :"+matr.toString());
         if(forme!=0){
             switch (forme){
@@ -400,55 +348,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         mAngle = angle;
     }
 
-//    public float[] getPosition(int symbole) {
-//        if(symbole>0){
-//            return plusposition;
-//        }else if(symbole<0){
-//            return minusposition;
-//        }else if(symbole==0){//au cas ou
-//            return equalposition;
-//        }
-//        return new float[16];
-//    }
 
     public void setPosition(float v, float v1) {
 
     }
-    public void setBgColor(float r, float g, float b){
-        GLES20.glClearColor(r, g, b, 1.0f);
-    }
-
-    public void afficher(int forme, int cadre){
-
-    }
-
-    public void dosomethinggoddammit() {
-//        float[] scratch = new float[16];
-//        Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
-//
-//        mpenta.draw(scratch);
-//        System.out.println("COUCOU !");
-
-//        displayCarte(2,displayA);
-//        displayCarte(5,displayB);
-//        hexa.draw(a2);
 
 
-        left=1;
-        middle=5;
-        right=7;
 
-    }
-
-    public void switchTurn(){
-//        turn=turn%2+1;
-//        if(turn==2){
-//        arrow.draw(a2);}else{
-//            arrow.draw(a1);
-//        }
-    }
-
-    public void truc(){
+    public void truc(){//une fonction de test
         left=(left+1)%8;
         middle=(middle+1)%8;
         right=(right+1)%8;
@@ -460,6 +367,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
     //Une ancienne version du Gamecontroller qui ne marchait pas à cause du getFreeCard semble-t-il
+    //Je trouvais ça dommage de la supprimer mais ne vous fatiguez pas à la lire vous n'y apprendrez rien de nouveau ou d'utile
 
 
 ////    private int turn;

@@ -27,7 +27,7 @@ import com.dankmemeincorporated.petitgrand_final.MyGLRenderer;
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.
  */
-public class Triforce {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
+public class Triforce {//fallait bien finir sur une triforce quand même
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -66,7 +66,7 @@ public class Triforce {//bon bah appremment c'est une couronne ¯\_(ツ)_/¯
             -0.06f,-0.0f,0.0f,
             };
 
-    private final short drawOrder[] = { 0,5,4, 5,2,1, 4,1,3};//0, 1, 2, 1, 2, 3 , 2, 3, 4 }; // order to draw vertices
+    private final short drawOrder[] = { 0,5,4, 5,2,1, 4,1,3};
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
