@@ -156,9 +156,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
 //                    mRenderer = new MyGLRenderer(6,6,6);
 //                    setRenderer(mRenderer);
 //                    OpenGLES20Activity.update(3,6,5);
-                    mRenderer.setBgColor(1.0f,0.0f,0.0f);
-                    mRenderer.doStuff();
+//                    mRenderer.setBgColor(1.0f,0.0f,0.0f);
+//                    mRenderer.dosomethinggoddammit();
 
+                    if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(1);}
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditionp=false;
 
@@ -173,7 +174,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     conditionm=true;
                     break;
                 case MotionEvent.ACTION_UP:
-                    mRenderer.setBgColor(0.0f,1.0f,0.0f);
+//                    mRenderer.setBgColor(0.0f,1.0f,0.0f);
+//                    mRenderer.truc();
+                    if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(-1);}
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditionm=false;
 
@@ -188,7 +191,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     conditione=true;
                     break;
                 case MotionEvent.ACTION_UP:
-                    mRenderer.setBgColor(0.0f,0.0f,1.0f);
+//                    mRenderer.setBgColor(0.0f,0.0f,1.0f);
+                    if(mRenderer.gc.getWinner()==0){mRenderer.gc.bet(0);}
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditione=false;
 
@@ -204,8 +208,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
                     conditions=true;
                     break;
                 case MotionEvent.ACTION_UP:
-                    mRenderer.setBgColor(0.5f,0.5f,1.0f);
-                    mRenderer.switchTurn();
+//                    mRenderer.setBgColor(0.5f,0.5f,1.0f);
+//                    mRenderer.switchTurn();
+                    if(mRenderer.gc.getWinner()==0){mRenderer.gc.stop();}else{
+                        mRenderer.gc=new GameController();//après avoir gagné 
+                    }
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditions=false;
 

@@ -60,7 +60,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private Triforce triforce;
     private Frame frame;
 
-    public GameController gc;//=new GameController();
+    public GameController gc=new GameController();
 
     private Plus plus;
     private Minus minus;
@@ -71,6 +71,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private int middle;
     private int right;
     private int turn;
+
+    private Pentagone penta2;
+
+
 
     private float[] displayA = new float[16];
     private float[] displayB = new float[16];
@@ -118,6 +122,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         arrow = new Arrow();
 
         turn=1;
+
+        penta2 = new Pentagone();
+
+        gc.cheat();
 
 //        gc = new GameController();
 
@@ -217,15 +225,23 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         frame.draw(displayA);
         frame.draw(displayB);
-        minus.draw(m);
-        plus.draw(p);
-        equal.draw(e);
+        if(gc.getWinner()==0){
+            minus.draw(m);
+            plus.draw(p);
+            equal.draw(e);
+        }
 
         arrow.draw(a);
-        if ((turn == 1)) {
+        if ((gc.getTurn() == 1)) {
             arrow.draw(a1);
-        } else if(turn==2) {
+            if(gc.getWinner()==1){
+                mpenta.draw(a1);
+            }
+        } else if(gc.getTurn()==2) {
             arrow.draw(a2);
+            if(gc.getWinner()==2){
+                mpenta.draw(a2);
+            }
         }else{
             System.out.println("Turn not regcognized.");
         }
@@ -257,17 +273,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
         frame.draw(scratch);
 //        System.out.println("left :"+left);
-        displayCarte(left,displayB);
+        displayCarte(gc.getLeft(),displayB);
 //        System.out.println("middle :"+middle);
-        displayCarte(middle,scratch);
+        displayCarte(gc.getMid(),scratch);
 //        System.out.println("right :"+right);
-        displayCarte(right,displayA);
+        displayCarte(gc.getRight(),displayA);
 
 //        displayCarte(2,displayA);
 //        displayCarte(5,displayB);
+//        hexa.draw(displayA);
 
 
 //        mpenta.draw(scratch);
+//        penta2.draw(displayB);
 
 
     }
@@ -396,15 +414,21 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
-    public void doStuff() {
-        float[] scratch = new float[16];
+    public void dosomethinggoddammit() {
+//        float[] scratch = new float[16];
 //        Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
 //
 //        mpenta.draw(scratch);
+//        System.out.println("COUCOU !");
 
-        displayCarte(2,displayA);
-        displayCarte(5,displayB);
+//        displayCarte(2,displayA);
+//        displayCarte(5,displayB);
+//        hexa.draw(a2);
 
+
+        left=1;
+        middle=5;
+        right=7;
 
     }
 
@@ -414,6 +438,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         arrow.draw(a2);}else{
             arrow.draw(a1);
         }
+    }
+
+    public void truc(){
+        left=(left+1)%8;
+        middle=(middle+1)%8;
+        right=(right+1)%8;
     }
 
 

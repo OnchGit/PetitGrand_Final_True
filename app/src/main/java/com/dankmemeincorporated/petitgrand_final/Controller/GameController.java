@@ -6,19 +6,27 @@ package com.dankmemeincorporated.petitgrand_final.Controller;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class GameController {
     private int turn;
-    private LinkedList<Integer> stackA;
-    private LinkedList<Integer> stackB;
-    private LinkedList<Integer> stackMid;
-    private LinkedList<Integer> stackRev;
+    private boolean cheatmode;
+    private int winner;
+    private LinkedList<Integer> stackA=new LinkedList<Integer>();
+    private LinkedList<Integer> stackB=new LinkedList<Integer>();
+    private LinkedList<Integer> stackMid=new LinkedList<Integer>();
+    private LinkedList<Integer> stackRev=new LinkedList<Integer>();
 
     public GameController(){
         turn = 1;
+        cheatmode=false;
+        winner=0;
 
         distribute();
 
+    }
+    public void cheat(){
+        cheatmode=true;
     }
 
     public void distribute(){
@@ -29,32 +37,64 @@ public class GameController {
         stackMid.add(getFreeCard());
     }
 
-    private int cards[]={9,9,9,9,9,9,9};
+    private static int cards[]={9,9,9,9,9,9,9};
     public int getFreeCard(){
-        boolean done = false;
-        while(!done) {
-            int nb = ((int) Math.random() % 7);
-            if (cards[nb] > 0) {
-                cards[nb]--;
-                done=true;//c'est par principe ^^
-                return nb+1;
+//        System.out.println("Bonjour!");
+//        boolean done = false;
+        Random rand = new Random();
+//        while(!done) {
+//            System.out.println("Boucle !");
+//
+//            int nb = rand.nextInt(6);
+//            if (cards[nb] > 0) {
+//                cards[nb]--;
+//                done=true;//c'est par principe ^^
+//                return nb+1;
+//            }
+//        }
+        int nb=0;
+        do{
+            for (int c :cards){
+                System.out.println(c);
             }
-        }
-        return 0;
+            System.out.println("stop");
+
+            nb = rand.nextInt(7);
+        }while(cards[nb] == 0);
+        cards[nb]--;
+        return nb+1;
     }
 
 
     public void bet(int bt){
-        LinkedList<Integer> stack = (turn==1)? stackA : stackB;
-
-        if(
-                (bt==1&&stack.getFirst().intValue()>stackMid.getFirst().intValue())||
-                (bt==0&&stack.getFirst().intValue()==stackMid.getFirst().intValue())||
-                (bt==-1&&stack.getFirst().intValue()<stackMid.getFirst().intValue())){
-            continuer();//succes
+        LinkedList<Integer> stack;
+        int compare=stackMid.getLast().intValue();
+//        if(stackRev.isEmpty()){//j'avais compris qu'on comparait à la dernière jouée
+//            compare=stackMid.getLast().intValue();
+//        }else{
+//            compare=stackRev.getLast().intValue();
+//        }
+        if(turn==1){
+            if(
+                    (bt==1&&stackA.getFirst().intValue()>compare)||
+                            (bt==0&&stackA.getFirst().intValue()==compare)||
+                            (bt==-1&&stackA.getFirst().intValue()<compare)){
+                continuer();//succes
+            }else{
+                rempiler();//echec
+            }
         }else{
-            rempiler();//echec
+            if(
+                    (bt==1&&stackB.getFirst().intValue()>compare)||
+                            (bt==0&&stackB.getFirst().intValue()==compare)||
+                            (bt==-1&&stackB.getFirst().intValue()<compare)){
+                continuer();//succes
+            }else{
+                rempiler();//echec
+            }
         }
+
+
     }
 
     public void rempiler(){
@@ -66,6 +106,7 @@ public class GameController {
 //            stackRev.setTail(new Maillon());
             stackA.addAll(stackRev);
             stackRev.clear();
+            turn=(turn%2)+1;
         }
         if(turn==2) {
 //            stackRev.getLast().setNext(stackB.getFirst());
@@ -75,6 +116,7 @@ public class GameController {
 //            stackRev.setTail(new Maillon());
             stackB.addAll(stackRev);
             stackRev.clear();
+            turn=(turn%2)+1;
         }
     }
     public void continuer(){
@@ -113,20 +155,52 @@ public class GameController {
 //        stackRev.setTail(new Maillon(0));
         stackMid.addAll(stackRev);
         stackRev.clear();
+        turn=turn%2+1;
     }
 
     public void win(int who){
         System.out.println("Joueur "+who+" a gagné !");
+        winner=who;
     }
 
-    public int getLeft(){return stackA.getFirst().intValue();}
-    public int getRight(){return stackB.getFirst().intValue();}
-    public int getMid(){
-        if(stackRev.isEmpty()/*.getFirst().intValue()==0*/){
-            return stackMid.getLast().intValue();
+    public int getLeft(){
+        if(cheatmode) {
+            if(stackA.isEmpty()){
+                return 0;
+            }else {
+                return stackA.getFirst().intValue();
+            }
+        }else{
+            if(stackRev.isEmpty()){
+                return 0;
+            }else{
+                return stackRev.getLast().intValue();
+            }
         }
-        return stackRev.getLast().intValue();
     }
+    public int getRight(){
+        if(cheatmode){
+            if(stackB.isEmpty()){
+                return 0;
+            }else {
+                return stackB.getFirst().intValue();
+            }
+        }else{
+            if(stackRev.isEmpty()){
+                return 0;
+            }else{
+                return stackRev.getLast().intValue();
+            }
+        }
+
+    }
+    public int getMid(){
+//        if(stackRev.isEmpty()/*.getFirst().intValue()==0*/){
+        return stackMid.getLast().intValue();
+//        }
+//        return stackRev.getLast().intValue();
+    }
+
 
     public int switchTurn(){
         if(turn==1){
@@ -137,5 +211,28 @@ public class GameController {
         return turn;
     }
 
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public boolean isCheatmode() {
+        return cheatmode;
+    }
+
+    public void setCheatmode(boolean cheatmode) {
+        this.cheatmode = cheatmode;
+    }
+
+    public int getWinner() {
+        return winner;
+    }
+
+    public void setWinner(int winner) {
+        this.winner = winner;
+    }
 }
 //TODO afficher le stackrev.getlast() ou stackmid.getlast si l'autre est vide
