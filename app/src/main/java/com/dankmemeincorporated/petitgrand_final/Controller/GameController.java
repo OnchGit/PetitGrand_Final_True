@@ -24,8 +24,12 @@ public class GameController {
 
         distribute();
 
+        System.out.println(stackA);
+        System.out.println(stackB);
+        System.out.println(turn);
+
     }
-    public void cheat(){
+    public void cheat(){//en mode cheat le joueur peut voir la carte actuelle et pas simplement la dernière qu'il a joué.
         cheatmode=true;
     }
 
@@ -81,6 +85,7 @@ public class GameController {
                             (bt==-1&&stackA.getFirst().intValue()<compare)){
                 continuer();//succes
             }else{
+                System.out.println("J1 rempile !");
                 rempiler();//echec
             }
         }else{
@@ -97,8 +102,10 @@ public class GameController {
 
     }
 
-    public void rempiler(){
+    public void rempiler(){//le joueur n'a pas réussi son pari il récupère les cartes jouées
         if(turn==1) {
+            System.out.println("Rempilage !");
+            System.out.println("tour : "+turn);
 //            stackRev.getLast().setNext(stackA.getFirst());
 //            stackA.setHead(stackRev.getFirst());
 //            turn=2;
@@ -107,8 +114,10 @@ public class GameController {
             stackA.addAll(stackRev);
             stackRev.clear();
             turn=(turn%2)+1;
-        }
-        if(turn==2) {
+            System.out.println("maintenant tour : "+turn);
+//            switchTurn();
+//            turn=2;
+        }else /*if(turn==2) */{
 //            stackRev.getLast().setNext(stackB.getFirst());
 //            stackB.setHead(stackRev.getFirst());
 //            turn=1;
@@ -117,6 +126,7 @@ public class GameController {
             stackB.addAll(stackRev);
             stackRev.clear();
             turn=(turn%2)+1;
+//            switchTurn();
         }
     }
     public void continuer(){
@@ -149,6 +159,7 @@ public class GameController {
     }
 
     public void stop(){
+//        System.out.println("stop");
 //        stackMid.getLast().setNext(stackRev.getFirst());
 //        stackMid.setTail(stackRev.getLast());
 //        stackRev.setHead(new Maillon(0));
@@ -156,6 +167,7 @@ public class GameController {
         stackMid.addAll(stackRev);
         stackRev.clear();
         turn=turn%2+1;
+//        switchTurn();
     }
 
     public void win(int who){
@@ -234,5 +246,21 @@ public class GameController {
     public void setWinner(int winner) {
         this.winner = winner;
     }
+
+    public void restart() {
+        switchTurn();
+        winner=0;
+        stackB.clear();
+        stackA.clear();
+        stackRev.clear();
+        stackMid.clear();
+        cards[0]=9;
+        cards[1]=9;
+        cards[2]=9;
+        cards[3]=9;
+        cards[4]=9;
+        cards[5]=9;
+        cards[6]=9;
+        distribute();
+    }
 }
-//TODO afficher le stackrev.getlast() ou stackmid.getlast si l'autre est vide

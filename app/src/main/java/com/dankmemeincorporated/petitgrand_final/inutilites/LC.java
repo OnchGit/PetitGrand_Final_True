@@ -1,4 +1,4 @@
-package com.dankmemeincorporated.petitgrand_final;
+package com.dankmemeincorporated.petitgrand_final.inutilites;
 
 public class LC {
     private Maillon head;

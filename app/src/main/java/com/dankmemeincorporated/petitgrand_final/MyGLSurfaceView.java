@@ -211,7 +211,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 //                    mRenderer.setBgColor(0.5f,0.5f,1.0f);
 //                    mRenderer.switchTurn();
                     if(mRenderer.gc.getWinner()==0){mRenderer.gc.stop();}else{
-                        mRenderer.gc=new GameController();//après avoir gagné 
+                        mRenderer.restart();//après avoir gagné
                     }
                     requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
                     conditions=false;

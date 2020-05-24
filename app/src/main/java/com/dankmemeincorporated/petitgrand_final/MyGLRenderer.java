@@ -70,7 +70,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private int left;
     private int middle;
     private int right;
-    private int turn;
+//    private int turn;
 
     private Pentagone penta2;
 
@@ -121,11 +121,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         equal = new Equal();
         arrow = new Arrow();
 
-        turn=1;
+//        turn=1;
 
         penta2 = new Pentagone();
 
         gc.cheat();
+//TODO utiliiser la fonction cheat permet de visualiser la carte actuelle au lieu de la dernière carte jouée
+
 
 //        gc = new GameController();
 
@@ -229,18 +231,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             minus.draw(m);
             plus.draw(p);
             equal.draw(e);
+        }else{
+            mpenta.draw(m);
+            mpenta.draw(p);
+            mpenta.draw(e);
         }
 
         arrow.draw(a);
         if ((gc.getTurn() == 1)) {
-            arrow.draw(a1);
             if(gc.getWinner()==1){
                 mpenta.draw(a1);
+            }else{
+                arrow.draw(a1);
             }
         } else if(gc.getTurn()==2) {
-            arrow.draw(a2);
             if(gc.getWinner()==2){
                 mpenta.draw(a2);
+            }else{
+                arrow.draw(a2);
             }
         }else{
             System.out.println("Turn not regcognized.");
@@ -273,11 +281,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(scratch,0,mProjectionMatrix,0,mViewMatrix,0);
         frame.draw(scratch);
 //        System.out.println("left :"+left);
-        displayCarte(gc.getLeft(),displayB);
+        displayCarte(gc.getLeft(),displayA);
 //        System.out.println("middle :"+middle);
         displayCarte(gc.getMid(),scratch);
 //        System.out.println("right :"+right);
-        displayCarte(gc.getRight(),displayA);
+        displayCarte(gc.getRight(),displayB);
 
 //        displayCarte(2,displayA);
 //        displayCarte(5,displayB);
@@ -433,11 +441,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void switchTurn(){
-        turn=turn%2+1;
-        if(turn==2){
-        arrow.draw(a2);}else{
-            arrow.draw(a1);
-        }
+//        turn=turn%2+1;
+//        if(turn==2){
+//        arrow.draw(a2);}else{
+//            arrow.draw(a1);
+//        }
     }
 
     public void truc(){
@@ -446,8 +454,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         right=(right+1)%8;
     }
 
+    public void restart(){
+        gc.restart();
+    }
 
-    //Je vais essayer de mettre le GameController ici parce que flute !
+
+    //Une ancienne version du Gamecontroller qui ne marchait pas à cause du getFreeCard semble-t-il
 
 
 ////    private int turn;
@@ -558,6 +570,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 //        }
 //        return stackRev.getTail().getValue();
 //    }
-//TODO afficher le stackrev.getlast() ou stackmid.getlast si l'autre est vide
+//
 
 }
