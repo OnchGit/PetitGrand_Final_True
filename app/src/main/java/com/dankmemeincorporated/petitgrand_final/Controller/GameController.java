@@ -17,10 +17,14 @@ public class GameController {
     private LinkedList<Integer> stackMid=new LinkedList<Integer>();
     private LinkedList<Integer> stackRev=new LinkedList<Integer>();
 
+    private int stock1;
+    private int stock2;
+
     public GameController(){
         turn = 1;
         cheatmode=false;
         winner=0;
+        stock1=stock2=0;
 
         distribute();
 
@@ -104,8 +108,8 @@ public class GameController {
 
     public void rempiler(){//le joueur n'a pas réussi son pari il récupère les cartes jouées
         if(turn==1) {
-            System.out.println("Rempilage !");
-            System.out.println("tour : "+turn);
+//            System.out.println("Rempilage !");
+//            System.out.println("tour : "+turn);
 //            stackRev.getLast().setNext(stackA.getFirst());
 //            stackA.setHead(stackRev.getFirst());
 //            turn=2;
@@ -114,7 +118,10 @@ public class GameController {
             stackA.addAll(stackRev);
             stackRev.clear();
             turn=(turn%2)+1;
-            System.out.println("maintenant tour : "+turn);
+            stock1=stackA.getFirst().intValue();//stoque le dernier élément afin de l'afficher au joueur puis le renvoit à la fin de la pile
+            stackA.add(stackA.getFirst().intValue());
+            stackA.removeFirst();
+//            System.out.println("maintenant tour : "+turn);
 //            switchTurn();
 //            turn=2;
         }else /*if(turn==2) */{
@@ -126,6 +133,9 @@ public class GameController {
             stackB.addAll(stackRev);
             stackRev.clear();
             turn=(turn%2)+1;
+            stock2=stackB.getFirst().intValue();//stoque le dernier élément afin de l'afficher au joueur puis le renvoit à la fin de la pile
+            stackB.add(stackB.getFirst().intValue());
+            stackB.removeFirst();
 //            switchTurn();
         }
     }
@@ -175,22 +185,32 @@ public class GameController {
         winner=who;
     }
 
-    public int getLeft(){
-        if(cheatmode) {
-            if(stackA.isEmpty()){
+    public int getLeft() {//joueur 1 ... que j'ai mis à droite
+        if (cheatmode) {
+            if (stackA.isEmpty()) {
                 return 0;
-            }else {
+            } else {
                 return stackA.getFirst().intValue();
             }
-        }else{
-            if(stackRev.isEmpty()){
-                return 0;
-            }else{
-                return stackRev.getLast().intValue();
+        } else {
+            if (turn == 2) {
+                if (stock1 != 0) {
+                    int temp = stock1;
+                    stock1 = 0;
+                    return temp;
+                }else{
+                    return 0;
+                }
+            } else {
+                if (stackRev.isEmpty()) {
+                    return 0;
+                } else {
+                    return stackRev.getLast().intValue();
+                }
             }
         }
     }
-    public int getRight(){
+    public int getRight(){//joueur 2 ... qui lui est à gauche; moi aussi ça me fait mal au crâne
         if(cheatmode){
             if(stackB.isEmpty()){
                 return 0;
@@ -198,11 +218,36 @@ public class GameController {
                 return stackB.getFirst().intValue();
             }
         }else{
-            if(stackRev.isEmpty()){
-                return 0;
-            }else{
-                return stackRev.getLast().intValue();
+            if(turn==1){
+                if(stock2!=0){
+                    int temp=stock2;
+                    stock2=0;
+                    return temp;
+                } else {
+                    return 0;
+                }
+            } else {
+                if (stackRev.isEmpty()) {
+                    return 0;
+                } else {
+                    return stackRev.getLast().intValue();
+                }
             }
+
+//            if(turn==2){
+//
+//            }
+//            if(stackRev.isEmpty()){
+//                if(stock2==0){
+//                    return 0;
+//                }else{
+//                    int temp=stock2;
+//                    stock2=0;
+//                    return temp;
+//                }
+//            }else{
+//                return stackRev.getLast().intValue();
+//            }
         }
 
     }

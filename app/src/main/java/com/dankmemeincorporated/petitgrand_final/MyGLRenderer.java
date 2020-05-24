@@ -125,8 +125,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         penta2 = new Pentagone();
 
-        gc.cheat();
-//TODO utiliiser la fonction cheat permet de visualiser la carte actuelle au lieu de la dernière carte jouée
+//        gc.cheat();
+//TODO utiliiser la fonction cheat permet de visualiser la carte actuelle au lieu de la dernière carte jouée/retournée
 
 
 //        gc = new GameController();
